@@ -1,0 +1,7 @@
+pandas
+streamlit
+numpy
+requests
+json
+urllib
+geopy.geocoders
