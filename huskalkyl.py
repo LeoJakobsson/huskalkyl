@@ -40,8 +40,7 @@ with right_column:
 
 #Sidebarinputs
 obj_adress = st.sidebar.text_input("Objektets adress:    ", value="Vanadisvägen 4, 113 46, Stockholm")
-yearslefttowork = st.sidebar.number_input("År kvar att jobba:    ", value=35)
-gross_income = st.sidebar.number_input("Bruttoinkomst:    ", value=840000)
+gross_income = st.sidebar.number_input("Bruttoinkomst hushåll/år:    ", value=1500000)
 
 purchase_price = st.sidebar.number_input("Inköpsvärde:    ", value=11700000)
 sqm = st.sidebar.number_input("Kvm:    ", value=160)
@@ -68,18 +67,24 @@ monthly_alarm_cost = st.sidebar.number_input("Larmkostnad/mån:    ", value=200,
 renovation_budget = total_ren_need
 road_cost = st.sidebar.number_input("Vägavgifter/mån:    ", value=200, key="rgs")
 interestRate = st.sidebar.number_input("Låneränta:   ",value=1.25)
+interestRate_safety1 = st.sidebar.number_input("Låneränta + %:   ",value=2.25, key="loan")
+interestRate_safety2 = st.sidebar.number_input("Låneränta + %:   ",value=3.25, key="loan2")
+
 
 #Variables calculations
 purchase_price = int(purchase_price)
 down_payment = int(down_payment)
 interestRate = float(interestRate/100)
+interestRate_safety1 = float(interestRate_safety1/100)
 loan_ratio = down_payment/purchase_price
 
 interestRate_per_month = float(interestRate/12)
 loanAmount = int(purchase_price - down_payment)
 monthlyPayment = int(loanAmount*(interestRate/12))
+monthlyPayment_safety1 = int(loanAmount*(interestRate_safety1)/12*0.7)
 monthly_amort_cost = int(loanAmount*(amortization_ptc/100/12))
-tot_monthly_cost = monthly_alarm_cost + monthly_broadband_tv_cost + monthly_electricity_cost + monthly_garbage_cost + monthly_insurance_cost + monthly_utilities_cost + monthlyPayment + monthly_amort_cost
+tot_monthly_cost = monthly_alarm_cost + monthly_broadband_tv_cost + monthly_electricity_cost + monthly_garbage_cost + monthly_insurance_cost + monthly_utilities_cost + monthlyPayment + monthly_amort_cost + goal_monthly_savings
+tot_monthly_cost_safety1 = monthly_alarm_cost + monthly_broadband_tv_cost + monthly_electricity_cost + monthly_garbage_cost + monthly_insurance_cost + monthly_utilities_cost + monthlyPayment_safety1 + monthly_amort_cost + goal_monthly_savings
 
 mortage_deed_cost = int((loanAmount-down_payment-mortage_deed)*0.02)
 title_deed_cost = int(purchase_price*0.015)
@@ -89,19 +94,25 @@ with left_column:
     #Adress map
     url = 'https://nominatim.openstreetmap.org/search/' + urllib.parse.quote(obj_adress) +'?format=json'
     response = requests.get(url).json()
-    print(response[0]["lat"])
-    print(response[0]["lon"])
-    # st.map(adress_loc)  
-
-with left_column:
+    df_mapdata = pd.DataFrame(response)
+    df_mapdata2 = pd.DataFrame(columns=["lat", "lon"])
+    df_mapdata2["lat"] = df_mapdata["lat"].astype(float)
+    df_mapdata2["lon"] = df_mapdata["lon"].astype(float)
+    # map_data = pd.DataFrame({"lat":, "lon":})
+    # print(response)
+    # print(response[0]["lat"])
+    # print(response[0]["lon"])
+    st.map(df_mapdata2)  
+    
     #Visualisering
     st.header("Månadskostnader")
     st.write("Pris/kvm:", int(purchase_price/sqm))
-    st.write("Total kostnad/mån inkl driftkostnader", int(tot_monthly_cost))
-    st.write("Total räntekostnad/mån innan ränteavdrag", monthlyPayment)
     st.write("Total räntekostnad/mån efter ränteavdrag", int(monthlyPayment*0.7))
+    st.write("Räntekostnad vid + 1% efter ränteavdrag", int(monthlyPayment_safety1))
     st.write("Total amorteringskostnad/mån", monthly_amort_cost)
-    
+    st.write("Total kostnad/mån inkl amort, drift, räntekostnader", int(tot_monthly_cost))
+    st.write("Total kostnad/mån inkl amort, drift, räntekostnader" + "  " +  str(interestRate_safety1*100), int(tot_monthly_cost_safety1))
+       
     sum_ot_cost = mortage_deed_cost + title_deed_cost + inspection_cost + alarm_cost + total_ren_need
 
     st.header("Engångskostnader:")
@@ -111,5 +122,9 @@ with left_column:
     st.write("Larminstallation:", alarm_cost)
     st.write("Initialt renoveringsbehov:", renovation_cost)
     st.write("Summa engångskostnader:", sum_ot_cost)
+
+    #Kvar varje månad
+    st.header("Buffert")
+    st.write("Buffert varje månad inkl sparande", (gross_income*0.65/12)-tot_monthly_cost)
 
 
