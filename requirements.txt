@@ -5,3 +5,4 @@ requests
 json
 urllib
 geopy
+from geopy.geocoders import Nominatim
