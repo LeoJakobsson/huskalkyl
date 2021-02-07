@@ -4,7 +4,6 @@ import numpy as np
 import requests
 import json
 import urllib
-import geopy
 
 from geopy.geocoders import Nominatim
 
