@@ -5,8 +5,8 @@ import requests
 import json
 import urllib
 import geopy
-import Nominatim
 
+from geopy.geocoders import Nominatim
 
 geolocator = Nominatim(user_agent="example app")
 
