@@ -6,7 +6,7 @@ import json
 import urllib
 import urllib.parse
 
-st.title("Huskalkyl v3")
+st.title("Huskalkyl")
 
 left_column, right_column = st.beta_columns(2)
 
@@ -93,8 +93,6 @@ with left_column:
     print(response[0]["lon"])
     # st.map(adress_loc)  
 
-
-                
 with left_column:
     #Visualisering
     st.header("Månadskostnader")
