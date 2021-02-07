@@ -11,7 +11,7 @@ import Nominatim
 geolocator = Nominatim(user_agent="example app")
 
 
-st.title("Huskalkyl v2")
+st.title("Huskalkyl v3")
 
 left_column, right_column = st.beta_columns(2)
 
