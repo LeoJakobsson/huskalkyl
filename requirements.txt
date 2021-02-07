@@ -2,7 +2,6 @@ pandas
 streamlit
 numpy
 requests
-urllib
 geopy
 geopy.geocoders
 
