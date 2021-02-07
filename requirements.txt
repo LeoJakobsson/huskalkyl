@@ -4,4 +4,4 @@ numpy
 requests
 json
 urllib
-geopy.geocoders
+geopy
