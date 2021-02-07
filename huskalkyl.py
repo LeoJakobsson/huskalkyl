@@ -4,7 +4,8 @@ import numpy as np
 import requests
 import json
 import urllib
-from geopy.geocoders import Nominatim
+import geopy
+import Nominatim
 
 
 geolocator = Nominatim(user_agent="example app")
