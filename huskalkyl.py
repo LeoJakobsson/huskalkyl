@@ -4,10 +4,9 @@ import numpy as np
 import requests
 import json
 import urllib
+import urllib.parse
 
 from geopy.geocoders import Nominatim
-
-geolocator = Nominatim(user_agent="example app")
 
 
 st.title("Huskalkyl v3")
@@ -91,12 +90,11 @@ title_deed_cost = int(purchase_price*0.015)
 
 with left_column:
     #Adress map
-    adress_loc = pd.DataFrame(geolocator.geocode(obj_adress).point)
-    adress_loc["lon"] = adress_loc.iloc[1]
-    adress_loc.drop([1,2], inplace=True)
-    adress_loc.rename(columns={0:"lat"}, inplace=True)
-
-    st.map(adress_loc)  
+    url = 'https://nominatim.openstreetmap.org/search/' + urllib.parse.quote(obj_adress) +'?format=json'
+    response = requests.get(url).json()
+    print(response[0]["lat"])
+    print(response[0]["lon"])
+    # st.map(adress_loc)  
 
 
                 
