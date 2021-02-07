@@ -6,6 +6,9 @@ import json
 import urllib
 import urllib.parse
 
+from geopy.geocoders import Nominatim
+
+
 st.title("Huskalkyl v3")
 
 left_column, right_column = st.beta_columns(2)
