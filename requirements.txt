@@ -4,5 +4,4 @@ numpy
 requests
 json
 urllib
-geopy
-from geopy.geocoders import Nominatim
+geopy==2.1.0
