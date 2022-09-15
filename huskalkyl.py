@@ -8,12 +8,12 @@ import urllib.parse
 
 st.title("Huskalkyl1")
 
-left_column, right_column = st.beta_columns(2)
+left_column, right_column = st.columns(2)
 
 #Renoveringsbehov
 
 with right_column:
-    with st.beta_expander("Renoveringsbehov"):
+    with st.expander("Renoveringsbehov"):
         washingmachine = st.number_input("Tvättmaskin:    ", value=10000)
         dryer = st.number_input("Torktumlare:    ", value=10000)
         kitchen = st.number_input("Kök:    ", value=150000)
